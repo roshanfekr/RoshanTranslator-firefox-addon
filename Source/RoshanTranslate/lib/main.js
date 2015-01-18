@@ -3,15 +3,28 @@ var data = require("sdk/self").data;
 // file in the "data" directory, and loading the "get-text.js" script
 // into it.
 
+var pageMod = require("sdk/page-mod");
 
 
+var self = require("sdk/self");
+// Create a page mod
+// It will run a script whenever a ".org" URL is loaded
+// The script replaces the page contents with a message
+pageMod.PageMod({
+  include: "*.org",
+  contentScriptFile: self.data.url("jquery-1.11.1.js")
+});
 
-    var langCode;
+
+var langCode;
     
 var text_entry = require("sdk/panel").Panel({
   contentURL: data.url("text-entry.html"),
-  contentScriptFile: data.url("get-text.js")
+  contentScriptFile: [
+                      data.url("get-text.js"),
+                      data.url("jquery-1.11.1.js")]
 });
+
 
 
 //Create Context menu
@@ -22,34 +35,24 @@ var contextMenu = require("sdk/context-menu");
   contentScript: 'self.on("click", function () {' +
                  '  var text = window.getSelection().toString();' +
                  '  self.postMessage(text);' +
-                 ' document.write("<script>alert(22);</script>");' +
                  '});',
   onMessage: function (selectionText) {
-    
-    callbackDescription(selectionText);
     console.log(selectionText);
+    text_entry.port.emit("warning", selectionText);
+    handleClick();
   }
   
   
 });
  
 
+ 
+  function translate(word)
+  {
+    
+  }
 
 
-
-    function translateToLangCode(lang) {
-        langCode = lang;
-        translateDescription();
-    }
-
-    function translateDescription() {
-        var faciDescScript = document.createElement('script');
-        faciDescScript.type = 'text/javascript';
-        var sourceText = escape(document.getElementById("siteDescEN").innerHTML);
-        var faciDesc = 'https://www.googleapis.com/language/translate/v2?key=API_KEY_HEREsource=en&target=' + langCode.toLowerCase() + '&callback=callbackDescription&q=' + sourceText;
-        faciDescScript.src = faciDesc;
-        document.getElementsByTagName('head')[0].appendChild(faciDescScript);
-    }   
 // Create a button
 require("sdk/ui/button/action").ActionButton({
   id: "show-panel",
@@ -59,12 +62,15 @@ require("sdk/ui/button/action").ActionButton({
     "32": "./icon/icon-32.png",
     "64": "./icon/icon-64.png"
   },
-  onClick: handleClick
+  onClick: handleClick 
 });
 
 // Show the panel when the user clicks the button.
 function handleClick(state) {
   text_entry.show();
+  
+  //jqloader.translate();
+  
 }
 
 // When the panel is displayed it generated an event called
@@ -73,6 +79,7 @@ function handleClick(state) {
 // script can prepare the panel for display.
 text_entry.on("show", function() {
   text_entry.port.emit("show");
+
 });
 
 // Listen for messages called "text-entered" coming from
