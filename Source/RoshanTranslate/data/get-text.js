@@ -3,7 +3,7 @@
 // The message payload is the contents of the edit box.
 
 
-var textArea = find("edit-box");
+var textArea = null;
 
 
 // Listen for the "show" event being sent from the
@@ -13,14 +13,35 @@ var textArea = find("edit-box");
 // Set the focus to the text area so the user can
 // just start typing.
 self.port.on("show", function onShow() {
-  textArea.focus();
+    var textArea = $("#edit-box");
+    //textArea.focus();
 });
+
+    function GetMember() {
+        var wsurl = "http://localhost:56864/WebService1.asmx/HelloWorld";
+                $.ajax({
+                    type: "POST",
+                    url: wsurl ,
+                    contentType: "application/json; charset=utf-8",
+                    data: '',
+                    dataType: "json",
+                    success: function(data) {
+                        console.log(data)
+                        alert("ok");
+                    },
+                    error: function(data ,error) {
+                        console.log(data)
+                        var textArea = $("#edit-box");
+                        textArea.val(val);
+                    }
+
+                });
+    }
 
 
 self.port.on('warning', function(message)
-             {
-                    $("div1").load("https://en-maktoob.yahoo.com/?p=us");
-                   
-                    
+{
+    GetMember();
+
 });
 

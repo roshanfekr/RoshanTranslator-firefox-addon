@@ -37,13 +37,55 @@ var contextMenu = require("sdk/context-menu");
                  '  self.postMessage(text);' +
                  '});',
   onMessage: function (selectionText) {
-    console.log(selectionText);
+    /*
+     * console.log(selectionText);
     text_entry.port.emit("warning", selectionText);
-    handleClick();
+    handleClick(); */
+    
+      var Request = require("sdk/request").Request;
+      var quijote = Request({
+        url: "http://localhost:56864/WebService1.asmx/HelloWorld",
+        content : '{"userName":"mohammad"}',
+        dataType : 'json',
+        contentType: "application/json; charset=utf-8",
+        overrideMimeType: "application/json; charset=utf-8",
+        onComplete: function (response) {
+          console.log(response.text);
+        }
+      });
+      //text_entry.port.emit("warning", selectionText);
+      quijote.post();
+      
   }
   
   
 });
+ 
+
+ //Create Context menu
+var contextMenu = require("sdk/context-menu");
+ var menuItem = contextMenu.Item({
+    label: "Translate Selection",
+    context: contextMenu.SelectionContext(),
+    contentScriptFile : [self.data.url('jquery-1.11.1.js')],
+    onMessage: function (data) {
+        require('sdk/request')
+            .Request({
+                url: 'http://localhost:56864/WebService1.asmx/HelloWorld',
+                content: '',
+                onComplete: function (response) {
+
+                    console.log("sdfsdfsdf");
+                    text_entry.port.emit("show");
+  
+                }
+                
+            })
+            .get();
+            text_entry.port.emit("warning", selectionText);
+    }
+});
+ 
  
 
  
