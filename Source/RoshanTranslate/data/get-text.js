@@ -17,31 +17,25 @@ self.port.on("show", function onShow() {
     //textArea.focus();
 });
 
-    function GetMember() {
-        var wsurl = "http://localhost:56864/WebService1.asmx/HelloWorld";
-                $.ajax({
-                    type: "POST",
-                    url: wsurl ,
-                    contentType: "application/json; charset=utf-8",
-                    data: '',
-                    dataType: "json",
-                    success: function(data) {
-                        console.log(data)
-                        alert("ok");
-                    },
-                    error: function(data ,error) {
-                        console.log(data)
-                        var textArea = $("#edit-box");
-                        textArea.val(val);
-                    }
 
-                });
+    function GetMember(message) {
+
+            var div = $(".textarea");
+            /*
+            $.getJSON(message,
+                        $.each(message, function(i,user)
+                           {
+                                div.append( "<h4>"+ user +"</h4>" );
+                                
+                            })); */
+
     }
 
 
 self.port.on('warning', function(message)
 {
-    GetMember();
+    
+    GetMember(message);
 
 });
 
