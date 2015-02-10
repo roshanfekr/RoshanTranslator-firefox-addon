@@ -41,19 +41,24 @@ var contextMenu = require("sdk/context-menu");
      * console.log(selectionText);
     text_entry.port.emit("warning", selectionText);
     handleClick(); */
+    //text_entry.port.emit("warning", selectionText);
     
       var Request = require("sdk/request").Request;
       var quijote = Request({
-        url: "http://localhost:56864/WebService1.asmx/HelloWorld",
-        content : '{"userName":"mohammad"}',
+        url: 'http://translate.google.com/translate_a/t?client=t&sl=en' + 
+                '&tl=fa&ie=UTF-8&oe=UTF-8&q=' + selectionText ,
+        content : '',
         dataType : 'json',
-        contentType: "application/json; charset=utf-8",
+        userAgent : 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT 5.0)',
+        contentType: "application/x-www-form-urlencoded",
         overrideMimeType: "application/json; charset=utf-8",
         onComplete: function (response) {
           console.log(response.text);
+          text_entry.show();
+          text_entry.port.emit("warning", response.text);
         }
       });
-      //text_entry.port.emit("warning", selectionText);
+      
       quijote.post();
       
   }
@@ -63,6 +68,7 @@ var contextMenu = require("sdk/context-menu");
  
 
  //Create Context menu
+ /*
 var contextMenu = require("sdk/context-menu");
  var menuItem = contextMenu.Item({
     label: "Translate Selection",
@@ -72,7 +78,10 @@ var contextMenu = require("sdk/context-menu");
         require('sdk/request')
             .Request({
                 url: 'http://localhost:56864/WebService1.asmx/HelloWorld',
-                content: '',
+                content: 'http://translate.google.com/translate_a/t?client=t&sl={' + 'en' + 
+                '}&tl={' + 'fa' +
+                '}&ie=UTF-8&oe=UTF-8&q={' + 'ok' + '}',
+                
                 onComplete: function (response) {
 
                     console.log("sdfsdfsdf");
@@ -86,7 +95,7 @@ var contextMenu = require("sdk/context-menu");
     }
 });
  
- 
+ */
 
  
   function translate(word)
