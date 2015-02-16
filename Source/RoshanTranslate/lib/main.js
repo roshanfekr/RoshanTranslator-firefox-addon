@@ -19,6 +19,8 @@ pageMod.PageMod({
 var langCode;
     
 var text_entry = require("sdk/panel").Panel({
+  width: 400,
+  height: 400,
   contentURL: data.url("text-entry.html"),
   contentScriptFile: [
                       data.url("get-text.js"),

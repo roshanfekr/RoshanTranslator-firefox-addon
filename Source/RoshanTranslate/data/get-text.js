@@ -18,16 +18,58 @@ self.port.on("show", function onShow() {
 });
 
 
+function replaceAll(str1  , find , rep)
+{
+var old = str1 ;
+var string1 = "";
+string1=str1.toString();
+  // var reg= RegExp(find , 'g');
+while(1)
+{
+    string1 = string1.replace(find , rep);
+    if(old==string1)
+    {
+       break;
+    }
+    old= string1;
+}
+return string1;
+}
+
     function GetMember(message) {
 
             var div = $(".textarea");
-            /*
-            $.getJSON(message,
-                        $.each(message, function(i,user)
-                           {
-                                div.append( "<h4>"+ user +"</h4>" );
-                                
-                            })); */
+            var div1 = $(".box15");
+            var string2 ="";
+            var reg= RegExp(find , 'g');
+            message=replaceAll(message,",,",",[],");
+           // div.innerHtml= "<h4>" + message + "</h4>" ;
+            div.html("");
+            var count=0;
+            $.each($.parseJSON(message), function (item, value) {
+              var valuesub=value[0];
+              count ++;
+              
+              switch (count) {
+                case 1:
+                    div.append("<h3>" + valuesub[0] + "</h3>");
+                    break;
+                case 2:
+                    div1.append("<h3>" + valuesub[0] + "</h3>");
+                    break;
+              }
+              //alert(value);
+               /* $.each($.parseJSON(valuesub), function (item1, value1) {
+                    alert( value1);
+                });
+    */
+            });
+            
+            
+
+
+            
+                            
 
     }
 
@@ -37,5 +79,6 @@ self.port.on('warning', function(message)
     
     GetMember(message);
 
-});
+}
+);
 
