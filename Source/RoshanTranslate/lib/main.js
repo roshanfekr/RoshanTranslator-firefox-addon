@@ -16,16 +16,42 @@ pageMod.PageMod({
 });
 
 
+function myListener() {
+  if (selection.text)
+  {
+    console.log(selection.text);
+    translate(selection.text)
+  }
+
+  text_entry.show();
+
+  //text_entry.show({position:{ top:10 ,left:20 } });
+}
+var selection = require("sdk/selection");
+selection.on('select', myListener);
+
+
+
+
 var langCode;
-    
 var text_entry = require("sdk/panel").Panel({
-  width: 400,
-  height: 400,
+
   contentURL: data.url("text-entry.html"),
-  contentScriptFile: [
-                      data.url("get-text.js"),
+  contentScriptFile: [data.url("get-text.js"),
                       data.url("jquery-1.11.1.js")]
 });
+
+
+
+
+
+function handleChange(state) {
+  if (state.checked) {
+    panel.show({
+      position: button
+    });
+  }
+}
 
 
 
@@ -36,16 +62,22 @@ var contextMenu = require("sdk/context-menu");
   context: contextMenu.SelectionContext(),
   contentScript: 'self.on("click", function () {' +
                  '  var text = window.getSelection().toString();' +
-                 '  self.postMessage(text);' +
+                 '  self.postMessage(text); ' +
                  '});',
   onMessage: function (selectionText) {
-    /*
-     * console.log(selectionText);
-    text_entry.port.emit("warning", selectionText);
-    handleClick(); */
-    //text_entry.port.emit("warning", selectionText);
-    
-      var Request = require("sdk/request").Request;
+ 
+   translate(selectionText)
+      
+  }
+  
+  
+});
+
+
+ 
+  function translate(selectionText)
+  {
+          var Request = require("sdk/request").Request;
       var quijote = Request({
         url: 'http://translate.google.com/translate_a/t?client=t&sl=en' + 
                 '&tl=fa&ie=UTF-8&oe=UTF-8&q=' + selectionText ,
@@ -56,53 +88,12 @@ var contextMenu = require("sdk/context-menu");
         overrideMimeType: "application/json; charset=utf-8",
         onComplete: function (response) {
           console.log(response.text);
-          text_entry.show();
+          //text_entry.show();
           text_entry.port.emit("warning", response.text);
         }
       });
       
       quijote.post();
-      
-  }
-  
-  
-});
- 
-
- //Create Context menu
- /*
-var contextMenu = require("sdk/context-menu");
- var menuItem = contextMenu.Item({
-    label: "Translate Selection",
-    context: contextMenu.SelectionContext(),
-    contentScriptFile : [self.data.url('jquery-1.11.1.js')],
-    onMessage: function (data) {
-        require('sdk/request')
-            .Request({
-                url: 'http://localhost:56864/WebService1.asmx/HelloWorld',
-                content: 'http://translate.google.com/translate_a/t?client=t&sl={' + 'en' + 
-                '}&tl={' + 'fa' +
-                '}&ie=UTF-8&oe=UTF-8&q={' + 'ok' + '}',
-                
-                onComplete: function (response) {
-
-                    console.log("sdfsdfsdf");
-                    text_entry.port.emit("show");
-  
-                }
-                
-            })
-            .get();
-            text_entry.port.emit("warning", selectionText);
-    }
-});
- 
- */
-
- 
-  function translate(word)
-  {
-    
   }
 
 
@@ -134,6 +125,7 @@ text_entry.on("show", function() {
   text_entry.port.emit("show");
 
 });
+
 
 // Listen for messages called "text-entered" coming from
 // the content script. The message payload is the text the user

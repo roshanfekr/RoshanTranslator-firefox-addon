@@ -1,8 +1,9 @@
 
 [
     [["ò «»","book","",""]]
-    ,[["noun",["ò «»","œ› —","›’·","”›—","›’· ?«ﬁ”„ ? «“ ò «»"],[["ò «»",["book","volume","jacket"],,0.50283158],["œ› —",["office","book","bureau","registry","tome","volume"],,0.034218118],["›’·",["season","chapter","chapter","article","clause","book"]],["”›—",["travel","trip","journey","tour","voyage","book"]],["›’· ?«ﬁ”„ ? «“ ò «»",["chapter","book"]]],"book",1]
-        ,["verb",["—“—Ê ò—œ‰","œ— ò «» ?«œ› — À»  ò—œ‰"," Êﬁ?› ò—œ‰"],[["—“—Ê ò—œ‰",["book","reserve"],,0.004559123],["œ— ò «» ?«œ› — À»  ò—œ‰",["book"]],[" Êﬁ?› ò—œ‰",["arrest","confiscate","pull in","detain","distrain","book"]]],"book",2]]
+    ,[
+      ["noun",["ò «»","œ› —","›’·","”›—","›’· ?«ﬁ”„ ? «“ò «»"],[["ò «»",["book","volume","jacket"],,0.50283158],["œ› —",["office","book","bureau","registry","tome","volume"],,0.034218118],["›’·",["season","chapter","chapter","article","clause","book"]],["”›—",["travel","trip","journey","tour","voyage","book"]],["›’· ?«ﬁ”„ ? «“ ò «»",["chapter","book"]]],"book",1]
+     ,["verb",["—“—Ê ò—œ‰","œ— ò «» ?«œ› — À»  ò—œ‰"," Êﬁ?› ò—œ‰"],[["—“—Ê ò—œ‰",["book","reserve"],,0.004559123],["œ— ò «» ?«œ› — À»  ò—œ‰",["book"]],[" Êﬁ?› ò—œ‰",["arrest","confiscate","pull in","detain","distrain","book"]]],"book",2]]
     ,"en",
     ,[["ò «»",[1],true,false,1000,0,1,0]]
     ,[
