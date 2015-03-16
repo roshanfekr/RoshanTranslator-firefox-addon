@@ -77,7 +77,6 @@
         
         div1.append("<h3>" + valuesub + "</h3>");
         
-
          });
     }
     

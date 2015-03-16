@@ -11,8 +11,12 @@ var self = require("sdk/self");
 // It will run a script whenever a ".org" URL is loaded
 // The script replaces the page contents with a message
 pageMod.PageMod({
-  include: "*.org",
-  contentScriptFile: self.data.url("jquery-1.11.1.js")
+  include: "*.com",
+  contentScriptFile: self.data.url("jquery-1.11.1.js"),
+  contentScript: '$(document).mousemove(function(event){'+
+    'alert(event.pageX + ", " + event.pageY);' +
+  '});'
+                  
 });
 
 
@@ -77,7 +81,7 @@ var contextMenu = require("sdk/context-menu");
  
   function translate(selectionText)
   {
-          var Request = require("sdk/request").Request;
+      var Request = require("sdk/request").Request;
       var quijote = Request({
         url: 'http://translate.google.com/translate_a/t?client=t&sl=en' + 
                 '&tl=fa&ie=UTF-8&oe=UTF-8&q=' + selectionText ,
@@ -109,6 +113,7 @@ require("sdk/ui/button/action").ActionButton({
   onClick: handleClick 
 });
 
+
 // Show the panel when the user clicks the button.
 function handleClick(state) {
   text_entry.show();
@@ -116,6 +121,16 @@ function handleClick(state) {
   //jqloader.translate();
   
 }
+
+
+self.port.on('roshan', function(message )
+{
+    
+    GetMember(message);
+
+}
+);
+
 
 // When the panel is displayed it generated an event called
 // "show": we will listen for that event and when it happens,
