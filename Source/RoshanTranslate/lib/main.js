@@ -4,19 +4,40 @@ var data = require("sdk/self").data;
 // into it.
 
 var pageMod = require("sdk/page-mod");
-
+var pageMod1 = require("sdk/page-mod");
 
 var self = require("sdk/self");
 // Create a page mod
 // It will run a script whenever a ".org" URL is loaded
 // The script replaces the page contents with a message
 pageMod.PageMod({
-  include: "*.com",
+  include: "*",
   contentScriptFile: self.data.url("jquery-1.11.1.js"),
-  contentScript: '$(document).mousemove(function(event){'+
-    'alert(event.pageX + ", " + event.pageY);' +
-  '});'
+  contentScriptWhen: 'ready',
+
                   
+});
+
+var abc = 123;
+var pos_x = -1;
+var pos_y = -1;
+
+
+// get mouse position and set global variable
+pageMod1.PageMod({
+  include: "*",
+  contentScriptWhen: 'start',
+  contentScriptFile: [data.url("get-text.js"),
+                      data.url("jquery-1.11.1.js")],
+  contentScript:'$(document).mousemove(function(event){ var newabc = 456;self.postMessage(event.pageX + \',\' + event.pageY); });',
+  onAttach: function onAttach(worker) {
+    worker.on('message', function(x,y)
+    {
+      data=x.split(',');
+      pos_x = parseInt( data[0].trim(),10);
+      pos_y = parseInt(data[1].trim(),10);
+    });
+  }
 });
 
 
@@ -25,11 +46,8 @@ function myListener() {
   {
     console.log(selection.text);
     translate(selection.text)
+    text_entry.show({position:{ top:pos_y ,left:pos_x } });
   }
-
-  text_entry.show();
-
-  //text_entry.show({position:{ top:10 ,left:20 } });
 }
 var selection = require("sdk/selection");
 selection.on('select', myListener);
@@ -122,14 +140,6 @@ function handleClick(state) {
   
 }
 
-
-self.port.on('roshan', function(message )
-{
-    
-    GetMember(message);
-
-}
-);
 
 
 // When the panel is displayed it generated an event called
