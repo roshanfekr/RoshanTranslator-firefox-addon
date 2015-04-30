@@ -34,24 +34,31 @@ pageMod1.PageMod({
     worker.on('message', function(x,y)
     {
       data=x.split(',');
-      pos_x = parseInt( data[0].trim(),10);
+      pos_x = parseInt(data[0].trim(),10);
       pos_y = parseInt(data[1].trim(),10);
+      
     });
   }
 });
 
+var pageMod = require("sdk/page-mod");
+
+pageMod.PageMod({
+  include: "*",
+  contentScript: 'document.body.innerHTML = document.body.innerHTML + ' + ' "<div id=\'tran1\' class=\'alert-box error\'></div>";',
+  contentStyleFile: [data.url("notify.css")]
+});
 
 function myListener() {
   if (selection.text)
   {
     console.log(selection.text);
     translate(selection.text)
-    text_entry.show({position:{ top:pos_y ,left:pos_x } });
+    //text_entry.show({position:{ top:pos_y ,left:pos_x } });
   }
 }
 var selection = require("sdk/selection");
 selection.on('select', myListener);
-
 
 
 
@@ -60,8 +67,11 @@ var text_entry = require("sdk/panel").Panel({
 
   contentURL: data.url("text-entry.html"),
   contentScriptFile: [data.url("get-text.js"),
-                      data.url("jquery-1.11.1.js")]
+                      data.url("jquery-1.11.1.js")],
+  
+  
 });
+
 
 
 
