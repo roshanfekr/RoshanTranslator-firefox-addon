@@ -26,10 +26,9 @@ var pos_y = -1;
 // get mouse position and set global variable
 pageMod1.PageMod({
   include: "*",
-  contentScriptWhen: 'start',
   contentScriptFile: [data.url("get-text.js"),
                       data.url("jquery-1.11.1.js")],
-  contentScript:'$(document).mousemove(function(event){ var newabc = 456;self.postMessage(event.pageX + \',\' + event.pageY); });',
+  contentScript:'$(document).mousemove(function(event){ var newabc = 456;var x = document.getElementById("tran1");x.style.left = event.pageX.toString() +\'px\';x.style.top = event.pageY.toString()+\'px\'; self.postMessage(event.pageX + \',\' + event.pageY); });',
   onAttach: function onAttach(worker) {
     worker.on('message', function(x,y)
     {
@@ -45,7 +44,7 @@ var pageMod = require("sdk/page-mod");
 
 pageMod.PageMod({
   include: "*",
-  contentScript: 'document.body.innerHTML = document.body.innerHTML + ' + ' "<div id=\'tran1\' class=\'alert-box error\'></div>";',
+  contentScript: 'document.body.innerHTML = document.body.innerHTML + ' + ' "<div id=\'tran1\' style=\'left:200px;top:200px\' class=\'alert-box error\'></div>";',
   contentStyleFile: [data.url("notify.css")]
 });
 
