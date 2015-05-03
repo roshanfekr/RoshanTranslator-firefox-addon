@@ -68,6 +68,7 @@
 
 
 
+
     function Annex(json)
     {
         var div1 = $(".box15");
@@ -81,6 +82,8 @@
     }
     
 
+    
+
 self.port.on('warning', function(message )
 {
     
@@ -88,4 +91,6 @@ self.port.on('warning', function(message )
 
 }
 );
+
+
 

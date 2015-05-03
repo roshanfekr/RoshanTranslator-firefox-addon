@@ -21,15 +21,33 @@ pageMod.PageMod({
 var abc = 123;
 var pos_x = -1;
 var pos_y = -1;
+var work;
 
 
+// This content script sends header titles from the page to the add-on:
+var script = "onMessage = function onMessage(message) {" +
+                 "  window.alert(message);};"
+                 
 // get mouse position and set global variable
 pageMod1.PageMod({
   include: "*",
   contentScriptFile: [data.url("get-text.js"),
                       data.url("jquery-1.11.1.js")],
-  contentScript:'$(document).mousemove(function(event){ var newabc = 456;var x = document.getElementById("tran1");x.style.left = event.pageX.toString() +\'px\';x.style.top = event.pageY.toString()+\'px\'; self.postMessage(event.pageX + \',\' + event.pageY); });',
+  contentScript:'var x2=0; var y=0; ' +
+    '$(document).mousemove(function(event){ var newabc = 456;y=event.pageY;x2 =event.pageX ;   });' +
+    'var t = \'\';' +
+    ' function gText(e) { t = (document.all) ? document.selection.createRange().text :document.getSelection();' +
+       'var x = document.getElementById("tran1");' +
+       'if(t!=\'\') { ' +
+          'x.style.display = \'block\'; ' +
+          'x.style.left = x2.toString() +\'px\'; x.style.top = (y ).toString()+\'px\';' +
+          '} else { x.style.display = \'none\'; }' +
+      '}' +
+    'document.onmouseup = gText;'+
+    'if (!document.all) document.captureEvents(Event.MOUSEUP);',
+    
   onAttach: function onAttach(worker) {
+    work = worker;
     worker.on('message', function(x,y)
     {
       data=x.split(',');
@@ -39,6 +57,11 @@ pageMod1.PageMod({
     });
   }
 });
+
+
+
+
+
 
 var pageMod = require("sdk/page-mod");
 
