@@ -34,12 +34,14 @@ pageMod1.PageMod({
   contentScriptFile: [data.url("get-text.js"),
                       data.url("jquery-1.11.1.js")],
   contentScript:'var x2=0; var y=0; ' +
-    '$(document).mousemove(function(event){ var newabc = 456;y=event.pageY;x2 =event.pageX ;   });' +
+    '$(document).mousemove(function(event){ var newabc = 456;y=event.pageY-30;x2 =event.pageX ;   });' +
     'var t = \'\';' +
     ' function gText(e) { t = (document.all) ? document.selection.createRange().text :document.getSelection();' +
        'var x = document.getElementById("tran1");' +
+       'x.onmouseover=function(){var objX = document.getElementById("tran1"); objX.style.opacity = 1.0; objX.style.filter = "alpha(opacity=100)";};' +
+       'x.onmouseout=function(){var objX = document.getElementById("tran1"); objX.style.opacity = 0.5; objX.style.filter = "alpha(opacity=50)";};' + 
        'if(t!=\'\') { ' +
-          'x.style.display = \'block\'; ' +
+          'x.style.display = \'block\'; x.style.opacity = .5;x.style.filter = "alpha(opacity=50)";' +
           'x.style.left = x2.toString() +\'px\'; x.style.top = (y ).toString()+\'px\';' +
           '} else { x.style.display = \'none\'; }' +
       '}' +
