@@ -32,3 +32,15 @@
     background:#e3f7fc url('images/notice.png') no-repeat 10px 50%;
     border:1px solid #8ed9f6;
 }
+
+
+.pointer {
+    content: ""; 
+    position: absolute; 
+    display: block; 
+    width: 0; 
+    z-index: 1; 
+    border-color: #fff transparent; 
+    border-style: solid; 
+    border-width: 15px 15px 0; 
+}

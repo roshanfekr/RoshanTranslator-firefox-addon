@@ -5,8 +5,14 @@ var data = require("sdk/self").data;
 
 var pageMod = require("sdk/page-mod");
 var pageMod1 = require("sdk/page-mod");
-
 var self = require("sdk/self");
+
+const { pathFor } = require('sdk/system');
+const path = require('sdk/fs/path');
+const file = require('sdk/io/file');
+
+
+
 // Create a page mod
 // It will run a script whenever a ".org" URL is loaded
 // The script replaces the page contents with a message
@@ -18,6 +24,9 @@ pageMod.PageMod({
                   
 });
 
+
+
+
 var abc = 123;
 var pos_x = -1;
 var pos_y = -1;
@@ -25,29 +34,14 @@ var work;
 
 
 // This content script sends header titles from the page to the add-on:
-var script = "onMessage = function onMessage(message) {" +
-                 "  window.alert(message);};"
-                 
+var script =self.data.load("mainscript.js");      
 // get mouse position and set global variable
 pageMod1.PageMod({
   include: "*",
-  contentScriptFile: [data.url("get-text.js"),
-                      data.url("jquery-1.11.1.js")],
-  contentScript:'var x2=0; var y=0; ' +
-    '$(document).mousemove(function(event){ var newabc = 456;y=event.pageY-30;x2 =event.pageX ;   });' +
-    'var t = \'\';' +
-    ' function gText(e) { t = (document.all) ? document.selection.createRange().text :document.getSelection();' +
-       'var x = document.getElementById("tran1");' +
-       'x.onmouseover=function(){var objX = document.getElementById("tran1"); objX.style.opacity = 1.0; objX.style.filter = "alpha(opacity=100)";};' +
-       'x.onmouseout=function(){var objX = document.getElementById("tran1"); objX.style.opacity = 0.5; objX.style.filter = "alpha(opacity=50)";};' + 
-       'if(t!=\'\') { ' +
-          'x.style.display = \'block\'; x.style.opacity = .5;x.style.filter = "alpha(opacity=50)";' +
-          'x.style.left = x2.toString() +\'px\'; x.style.top = (y ).toString()+\'px\';' +
-          '} else { x.style.display = \'none\'; }' +
-      '}' +
-    'document.onmouseup = gText;'+
-    'if (!document.all) document.captureEvents(Event.MOUSEUP);',
-    
+  contentScriptWhen: 'start',
+  contentScriptFile: [data.url("jquery-1.11.1.js"),data.url("get-text.js")],
+  contentStyleFile: [data.url("notify.css")],
+  contentScript: script,
   onAttach: function onAttach(worker) {
     work = worker;
     worker.on('message', function(x,y)
@@ -63,15 +57,6 @@ pageMod1.PageMod({
 
 
 
-
-
-var pageMod = require("sdk/page-mod");
-
-pageMod.PageMod({
-  include: "*",
-  contentScript: 'document.body.innerHTML = document.body.innerHTML + ' + ' "<div id=\'tran1\' style=\'left:200px;top:200px\' class=\'alert-box error\'></div>";',
-  contentStyleFile: [data.url("notify.css")]
-});
 
 function myListener() {
   if (selection.text)
